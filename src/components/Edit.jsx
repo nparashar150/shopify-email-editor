@@ -58,7 +58,7 @@ const EmailEditorComponent = (props) => {
   const onLoad = async () => {
     const shopname = prompt('Enter your Shopify Shop name');
     ans = shopname;
-    await axios.get(`http://localhost:5000/user/${shopname}`)
+    await axios.get(`http://email-editor-np150-backend.herokuapp.com/user/${shopname}`)
     .then(
         res => {
             console.log(res);

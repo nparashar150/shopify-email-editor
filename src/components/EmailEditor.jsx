@@ -57,6 +57,11 @@ const EmailEditorComponent = (props) => {
       .then(
         res => {
           console.log(res);
+          if (res.data) {
+            alert(`Saved your Current State at ${shop}`);
+          } else {
+            alert('Error saving Online, download file for now');
+          }
         }
       ).catch(
         error => {
