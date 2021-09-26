@@ -86,6 +86,6 @@ app.get("/user/:username", async (req, res) => {
 app.get("/", (req, res) => {
     res.send("Email-App-Backend");
 });
-app.listen(process.env.SERVER_PORT, () => {
+app.listen(process.env.PORT || 5000, () => {
     console.log(`Express running on http://localhost:${process.env.SERVER_PORT}`);
 });
