@@ -26,14 +26,13 @@ mongoose.connect(process.env.ATLAS_CONNECTION_STRING, {
 
 app.post("/user", async (req, res) => {
     try {
-        const { shop, date, templateJSON, data } = req.body;
-        const existingUser = await userSchema.findOne({ shop });
+        const { shop, date, templateJSON } = req.body;
+        const existingUser = await userSchema.findOne({ shop: `${shop}` });
         if (existingUser) { 
             return res.status(400).send({status: 400, message: 'Shopname exists'});
          }
         const dataPOST = await userSchema.create({
             shop,
-            data,
             date, 
             templateJSON
         });
@@ -46,16 +45,17 @@ app.post("/user", async (req, res) => {
 app.patch("/user/:shop", async (req, res) => {
     try {
         const { shop, date, templateJSON } = req.body;
-        const existingUser = await userSchema.findOne({ shop });
+        const existingUser = await userSchema.findOne({ shop: `${shop}` });
+        console.log(existingUser);
         if (existingUser) { 
-            const data = await userSchema.findOneAndUpdate(shop, {
-                date, 
+            const data = await userSchema.findOneAndUpdate({shop: `${shop}`}, {
+                date,
                 templateJSON
             });
             await data.save();
             return res.status(201).json(data).send({status: 201, message: "Update Acknowledged"});
         } else {
-            return res.status(400).send({status: 400 ,message : "The user is not saved in Database."});
+            return res.status(400).send({status: 400 ,message : "The Shop is not saved in Database."});
         }
     } catch (error) {
         return res.status(400).send({status: 400, message: error});
@@ -74,10 +74,11 @@ app.get("/admin/userdata/:password", async (req, res) => {
         res.status(400).send(error);
     }
 });
-app.get("/user/:username", async (req, res) => {
+app.get("/user/:shop", async (req, res) => {
     try {
-        const user = req.params.username;
-        const data = await userSchema.findOne({user});
+        const shopname = req.params.shop;
+        console.log(shopname);
+        const data = await userSchema.find({shop: `${shopname}`});
         res.status(201).json(data);
     } catch (error) {
         res.status(400).send(error);
@@ -87,5 +88,5 @@ app.get("/", (req, res) => {
     res.send("Email-App-Backend");
 });
 app.listen(process.env.PORT || 5000, () => {
-    console.log(`Express running on http://localhost:${process.env.SERVER_PORT}`);
+    console.log(`Express running on http://localhost:${process.env.PORT || 5000}`);
 });
