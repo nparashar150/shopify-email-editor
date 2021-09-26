@@ -3,7 +3,6 @@ import EmailEditor from 'react-email-editor';
 import { Button, EmailEditorWrapper, ExportWrapper } from './EmailElements';
 import { template } from './template';
 import axios from 'axios';
-const username = "Username";
 const EmailEditorComponent = (props) => {
   const emailEditorRef = useRef(null);
   const downloadFile = ({ data, fileName, fileType }) => {
@@ -41,35 +40,31 @@ const EmailEditorComponent = (props) => {
         fileType: 'application/json',
       })
     });
-  }
-  
+  };
   const onLoad = () => {
     const templateJson = template;
     emailEditorRef.current.editor.loadDesign(templateJson);
   };
-
-  window.addEventListener('beforeunload', (e) => {
-    e.preventDefault();
-    autoSave()
-    e.returnValue = '';
-  });
-
-  const generatedData = {
-    username: "Async Now",
-    date: new Date(),
-    templateJson: "autoData"
-  }
-
-  const autoSave = async () => {
-    await axios.patch(`http://localhost:3300/user/${username}`, generatedData)
-    .then(
-      res => {
-        console.log(res);
-      }
-    ).catch (
-      error => { console.log(error); }
+  const savePOST = () => {
+    const ans = prompt("Enter your Shopify Shop name");
+    emailEditorRef.current.editor.exportHtml((data) => {
+      const { design } = data;
+      const templateJSON = JSON.stringify(design);
+      const shop = `${ans}`;
+      const date = new Date();
+      const PATCH = {shop, templateJSON, date}
+      axios.post(`https://email-editor-np150-backend.herokuapp.com/user`, {...PATCH})
+      .then(
+        res => {
+          console.log(res);
+        }
+      ).catch(
+        error => {
+          console.log(error);
+        }
     )
-  }
+    });
+  };
 
   return (
     <>
@@ -79,6 +74,7 @@ const EmailEditorComponent = (props) => {
       <ExportWrapper>
         <Button onClick={exportHtml}>Export HTML</Button>
         <Button onClick={exportJson}>Export JSON</Button>
+        <Button onClick={savePOST}>Save JSON</Button>
       </ExportWrapper>
     </>
   );
