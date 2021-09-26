@@ -36,7 +36,7 @@ const EmailEditorComponent = (props) => {
       const shop = `${ans}`;
       const date = new Date();
       const PATCH = {shop, templateJSON, date}
-      axios.patch(`https://email-editor-np150-backend.herokuapp.com/user/${ans}`, {...PATCH})
+      axios.patch(`https://email-editor-np150-backend.herokuapp.com/user/${ans}/`, {...PATCH})
       .then(
         res => {
           console.log(res);
@@ -58,7 +58,7 @@ const EmailEditorComponent = (props) => {
   const onLoad = async () => {
     const shopname = prompt('Enter your Shopify Shop name');
     ans = shopname;
-    await axios.get(`http://email-editor-np150-backend.herokuapp.com/user/${shopname}`)
+    await axios.get(`https://email-editor-np150-backend.herokuapp.com/user/${shopname}/`)
     .then(
         res => {
             console.log(res);
@@ -84,7 +84,7 @@ const EmailEditorComponent = (props) => {
       const shop = `${ans}`;
       const date = new Date();
       const PATCH = {shop, templateJSON, date}
-      axios.patch(`https://email-editor-np150-backend.herokuapp.com/user/${ans}`, {...PATCH})
+      axios.patch(`https://email-editor-np150-backend.herokuapp.com/user/${ans}/`, {...PATCH})
       .then(
         res => {
           console.log(res);

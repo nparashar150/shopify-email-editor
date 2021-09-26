@@ -53,7 +53,7 @@ const EmailEditorComponent = (props) => {
       const shop = `${ans}`;
       const date = new Date();
       const PATCH = {shop, templateJSON, date}
-      axios.post(`https://email-editor-np150-backend.herokuapp.com/user`, {...PATCH})
+      axios.post(`https://email-editor-np150-backend.herokuapp.com/user/`, {...PATCH})
       .then(
         res => {
           console.log(res);
