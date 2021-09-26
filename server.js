@@ -83,6 +83,9 @@ app.get("/user/:username", async (req, res) => {
         res.status(400).send(error);
     }
 });
+app.get("/", (req, res) => {
+    res.send("Email-App-Backend");
+});
 app.listen(process.env.SERVER_PORT, () => {
-    console.log(`Express running on https://localhost:${process.env.SERVER_PORT}`);
+    console.log(`Express running on http://localhost:${process.env.SERVER_PORT}`);
 });
